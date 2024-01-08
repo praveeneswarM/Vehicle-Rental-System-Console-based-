@@ -100,37 +100,6 @@ public class Admin {
             e.printStackTrace();
         }
     }
-
-
-    // static void DisplayVehicles()
-    // {
-    //     try{
-    //     String sql="SELECT * FROM disp";
-    //     PreparedStatement stmt=con.prepareStatement(sql);
-    //     ResultSet rs=stmt.executeQuery();
-    //     ResultSetMetaData rsmd=(ResultSetMetaData) rs.getMetaData();
-    //     int col=rsmd.getColumnCount();
-    //     System.out.println();
-    //     int id=0;
-    //     while(rs.next())
-    //     {
-    //         id++;
-    //         System.out.println(id);
-    //         for(int i=2;i<=col;i++)
-    //         {
-    //             if(i>2)
-    //             System.out.println(", ");
-    //             String val=rs.getString(i);
-    //             System.out.print(rsmd.getColumnName(i)+" : "+val);
-    //         }
-    //         System.out.println();
-    //     }
-    //     }catch(SQLException e)
-    //     {
-    //         e.printStackTrace();
-    //     }
-    // }
-
     static void DisplayVehicles() {
         try {
             String sql = "SELECT * FROM disp";
@@ -138,16 +107,12 @@ public class Admin {
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = (ResultSetMetaData)rs.getMetaData();
             int col = rsmd.getColumnCount();
-    
-            // Display table structure (column names)
             for (int i = 1; i <= col; i++) {
                 if (i > 1)
                     System.out.print("\t");
                 System.out.print(rsmd.getColumnName(i));
             }
-            System.out.println(); // move to the next line after printing column names
-    
-            // Display table data
+            System.out.println();
             while (rs.next()) {
                 for (int i = 1; i <= col; i++) {
                     if (i > 1)
@@ -155,7 +120,7 @@ public class Admin {
                     String val = rs.getString(i);
                     System.out.print(val);
                 }
-                System.out.println(); // move to the next line after printing each data row
+                System.out.println();
             }
         } catch (SQLException e) {
             e.printStackTrace();
