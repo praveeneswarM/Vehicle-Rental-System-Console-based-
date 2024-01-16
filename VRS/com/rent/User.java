@@ -41,7 +41,7 @@ public class User {
             switch(n)
             {
                 case 1:{
-                    Admin.DisplayVehicles();
+                    UserDisp();
                     break;
                 }
                 case 2:
@@ -65,7 +65,33 @@ public class User {
         }while(n!=4);
     }
 
-
+    static void UserDisp()
+    {
+        try{
+            String sql = "SELECT * FROM disp";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            ResultSetMetaData rsmd = (ResultSetMetaData)rs.getMetaData();
+            int col = rsmd.getColumnCount();
+            for (int i = 1; i < col; i++) {
+                if (i > 1)
+                    System.out.print("\t");
+                System.out.print(rsmd.getColumnName(i));
+            }
+            System.out.println();
+            while (rs.next()) {
+                for (int i = 1; i < col; i++) {
+                    if (i > 1)
+                        System.out.print("\t");
+                    String val = rs.getString(i);
+                    System.out.print(val);
+                }
+                System.out.println();
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     static void Rent(String u_id)
     {
         try{
@@ -100,6 +126,7 @@ public class User {
                         System.out.println("Model:"+rs.getString("model"));
                         System.out.println("Type:"+rs.getString("type"));
                         System.out.println("Color:"+rs.getString("color"));
+                        System.out.println("Kilometer:"+rs.getString("k_meter"));
                         System.out.println("Deposit:"+rs.getString("deposit"));
                         System.out.println("Number:"+rs.getString("ve_no"));
                         System.out.println("Seat:"+rs.getString("seat"));
@@ -141,7 +168,7 @@ public class User {
                         }
                     }
                     else{
-                        System.out.println("Vehicle not found");
+                        System.out.println("--- Vehicle not found ---");
                     }
                 }
             } catch(SQLException e)
@@ -152,7 +179,80 @@ public class User {
 
     static void Return(String u_id)
     {
-        
+        try{
+            sc.nextLine();
+            System.out.print("Enter the Vehicle ID to Return:");
+            String v=sc.nextLine();
+            String sql="UPDATE disp SET u_id=? WHERE id=?";
+            PreparedStatement stmt=con.prepareStatement(sql);
+            stmt.setString(1, "0");
+            stmt.setString(2, v);
+            int rs=stmt.executeUpdate();
+            if(rs>0)
+            {
+                String g="SELECT deposit,rent,k_meter FROM disp WHERE id=?";
+                PreparedStatement st=con.prepareStatement(g);
+                st.setString(1, v);
+                ResultSet rt=st.executeQuery();
+                if(rt.next())
+                {
+                    String dep=rt.getString("deposit");
+                    String rent=rt.getString("rent");
+                    String km=rt.getString("k_meter");
+                    System.out.print("Enter Kilometer:");
+                    String kilo=sc.nextLine();
+                    System.out.println("Damage Chart:");
+                    System.out.println("LOW");
+                    System.out.println("MEDIUM");
+                    System.out.println("HIGH");
+                    System.out.print("Enter Damage Rate:");
+                    String dam=sc.nextLine();
+                    int depo=0;
+                    if(dam.equals("LOW"))
+                    {
+                        int de=Integer.valueOf(dep);
+                        depo=de-(de/100)*20;
+                    }
+                    else if(dam.equals("MEDIUM"))
+                    {
+                        int de=Integer.valueOf(dep);
+                        depo=de-(de/100)*50;
+                    }
+                    else if(dam.equals("HIGH"))
+                    {
+                        int de=Integer.valueOf(dep);
+                        depo=de-(de/100)*75;
+                    }
+                    if(Integer.valueOf(kilo)-Integer.valueOf(km)>=500)
+                    {
+                        int r=Integer.valueOf(rent);
+                        int ren=r+(r/100)*15;
+                        System.out.println("Rent Should be payed: "+ren);
+                        System.out.println("Your Deposit After Damage Fair is "+depo);
+                    }
+                    else{
+                        System.out.println("Rent Should be payed: "+rent);
+                        System.out.println("Your Deposit After Damage Fair is "+depo);
+                    }
+                    String t="UPDATE disp SET k_meter=? WHERE id=?";
+                    PreparedStatement j=con.prepareStatement(t);
+                    j.setString(1, kilo);
+                    j.setString(2, v);
+                    int rr=j.executeUpdate();
+                    if(rr>0)
+                    System.out.println("--- Vehicle Returned Successfully ---");
+                    else
+                    {
+                        System.out.println("--- Try Again ---");
+                        Return(u_id);
+                    }
+                }
+            }
+
+        }catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args){
 
