@@ -89,6 +89,5 @@ public class Auth {
 }
 
     public static void main(String args[]) {
-        // Your main method code goes here
     }
 }
