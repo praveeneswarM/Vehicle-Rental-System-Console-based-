@@ -36,11 +36,12 @@ public class Auth {
         if(rs.next()){
             String role = rs.getString("role");
             String name = rs.getString("name");
+            String u_id = rs.getString("id");
             System.out.println();
             if(role.equals("admin")){
                 Admin.showAdmin(name);
             }else{
-                User.showUser(name);
+                User.showUser(name,u_id);
             }
         }else{
             System.out.println();
