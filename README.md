@@ -1,6 +1,6 @@
 # Vehicle-Rental-System
 
 ### Admin:
-    Working in Progress for Admin Moduke.
+    Required Modules are completed.It can be Updated soon.
 ### User:
-    Need to Work on the Module.
+    Rent modeule is completed. Need to Work on Return Module.
