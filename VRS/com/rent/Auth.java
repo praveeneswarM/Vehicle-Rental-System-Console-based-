@@ -22,9 +22,14 @@ public class Auth {
 
     public static void SignIn() {
         try{
-        
+        System.out.println("SignIn");
         System.out.print("Email: ");
-        String email = sc.nextLine();
+        String email = sc.nextLine().trim().toLowerCase();
+        if(!email.contains("@gmail.com"))
+        {
+            System.out.println("Enter Valid Email");
+            SignIn();
+        }
         System.out.print("Password: ");
         String pass = sc.nextLine();
         // System.out.println(email + " welcome!!");
@@ -59,9 +64,24 @@ public class Auth {
     public static void SignUp() {
         try{
         System.out.print("Name: ");
-        String name = sc.nextLine();
+        String name = sc.nextLine().trim();
         System.out.print("Email: ");
-        String mail = sc.nextLine();
+        String mail = sc.nextLine().trim().toLowerCase();
+        if(!mail.contains("@gmail.com"))
+        {
+            System.out.println("Enter Valid Email");
+            SignUp();
+        }
+        String em="SELECT email FROM user WHERE email=?";
+        PreparedStatement mm=con.prepareStatement(em);
+        mm.setString(1, mail);
+        ResultSet rr=mm.executeQuery();
+        if(rr.next())
+        {
+            System.out.println("Email Already Exist");
+            System.out.println("Try Another Email");
+            SignUp();
+        }
         System.out.print("Password: ");
         String pass = sc.nextLine();
         String sql="INSERT INTO user(name,email,pass) VALUES(?,?,?)";
