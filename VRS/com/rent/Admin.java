@@ -77,7 +77,12 @@ public class Admin {
             System.out.print("Name: ");
         String name = sc.nextLine();
         System.out.print("Email: ");
-        String mail = sc.nextLine();
+        String mail = sc.nextLine().trim().toLowerCase();
+        if(!mail.contains("@gmail.com"))
+        {
+            System.out.println("Enter Valid Email");
+            AddAdmin();
+        }
         System.out.print("Password: ");
         String pass = sc.nextLine();
         String sql="INSERT INTO user(name,email,pass,role) VALUES(?,?,?,?)";
@@ -98,36 +103,6 @@ public class Admin {
             e.printStackTrace();
         }
     }
-
-
-    // static void DisplayVehicles()
-    // {
-    //     try{
-    //     String sql="SELECT * FROM disp";
-    //     PreparedStatement stmt=con.prepareStatement(sql);
-    //     ResultSet rs=stmt.executeQuery();
-    //     ResultSetMetaData rsmd=(ResultSetMetaData) rs.getMetaData();
-    //     int col=rsmd.getColumnCount();
-    //     System.out.println();
-    //     int id=0;
-    //     while(rs.next())
-    //     {
-    //         id++;
-    //         System.out.println(id);
-    //         for(int i=2;i<=col;i++)
-    //         {
-    //             if(i>2)
-    //             System.out.println(", ");
-    //             String val=rs.getString(i);
-    //             System.out.print(rsmd.getColumnName(i)+" : "+val);
-    //         }
-    //         System.out.println();
-    //     }
-    //     }catch(SQLException e)
-    //     {
-    //         e.printStackTrace();
-    //     }
-    // }
 
     static void DisplayVehicles() {
         try {
