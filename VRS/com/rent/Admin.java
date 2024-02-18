@@ -77,12 +77,7 @@ public class Admin {
             System.out.print("Name: ");
         String name = sc.nextLine();
         System.out.print("Email: ");
-        String mail = sc.nextLine().trim().toLowerCase();
-        if(!mail.contains("@gmail.com"))
-        {
-            System.out.println("Enter Valid Email");
-            AddAdmin();
-        }
+        String mail = sc.nextLine();
         System.out.print("Password: ");
         String pass = sc.nextLine();
         String sql="INSERT INTO user(name,email,pass,role) VALUES(?,?,?,?)";
@@ -103,6 +98,69 @@ public class Admin {
             e.printStackTrace();
         }
     }
+
+    static void ret(String v)
+    {
+        try{
+            String g = "SELECT deposit,rent,k_meter FROM disp WHERE id=?";
+        PreparedStatement st = con.prepareStatement(g);
+        st.setString(1, v);
+        ResultSet rtt = st.executeQuery();
+                    if (rtt.next()) {
+                        String dep = rtt.getString("deposit");
+                        String rent = rtt.getString("rent");
+                        String km = rtt.getString("k_meter");
+                        System.out.print("Enter Kilometer:");
+                        String kilo = sc.nextLine();
+                        System.out.println("Damage Chart:");
+                        System.out.println("NO");
+                        System.out.println("LOW");
+                        System.out.println("MEDIUM");
+                        System.out.println("HIGH");
+                        System.out.print("Enter Damage Rate:");
+                        String dam = sc.nextLine().toUpperCase();
+                        int depo = 0;
+                        if (dam.equals("LOW")) {
+                            int de = Integer.valueOf(dep);
+                            depo = de - (de / 100) * 20;
+                        } else if (dam.equals("MEDIUM")) {
+                            int de = Integer.valueOf(dep);
+                            depo = de - (de / 100) * 50;
+                        } else if (dam.equals("HIGH")) {
+                            int de = Integer.valueOf(dep);
+                            depo = de - (de / 100) * 75;
+                        }
+                        else if(dam.equals("NO"))
+                        {
+                            depo=Integer.valueOf(dep);
+                        }
+                        if (Integer.valueOf(kilo) - Integer.valueOf(km) >= 500) {
+                            int r = Integer.valueOf(rent);
+                            int ren = r + (r / 100) * 15;
+                            System.out.println("Rent Should be payed: " + ren);
+                            System.out.println("Your Deposit After Damage Fair is " + depo);
+                        } else {
+                            System.out.println("Rent Should be payed: " + rent);
+                            System.out.println("Your Deposit After Damage Fair is " + depo);
+                        }
+                        String t = "UPDATE disp SET k_meter=? WHERE id=?";
+                        PreparedStatement j = con.prepareStatement(t);
+                        j.setString(1, kilo);
+                        j.setString(2, v);
+                        int rr = j.executeUpdate();
+                        if (rr > 0)
+                            System.out.println("--- Vehicle Returned Successfully ---");
+                        else {
+                            System.out.println("--- Try Again ---");
+                            ret(v);
+                        }
+                    }
+                    
+                }catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+        }
+   
 
     static void DisplayVehicles() {
         try {
