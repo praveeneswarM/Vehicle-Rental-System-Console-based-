@@ -33,7 +33,7 @@ public class Auth {
         System.out.print("Password: ");
         String pass = sc.nextLine();
         // System.out.println(email + " welcome!!");
-        String sql = "SELECT * FROM user where email = ? and pass= ?"; //select * from uder where email = "prabveen "and pass ="12345" --> 
+        String sql = "SELECT * FROM user where email = ? and pass= ?"; //select * from uder where email = "praveen "and pass ="1234578" --> 
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1,email);
         stmt.setString(2,pass);
@@ -56,6 +56,37 @@ public class Auth {
             Main.main(null);
         }
         // Admin.main();
+    }catch(SQLException e){
+        e.printStackTrace();
+    }
+}
+    public static void SignIn(String v) {
+        try{
+        System.out.println("SignIn");
+        System.out.print("Email: ");
+        String email = sc.nextLine().trim().toLowerCase();
+        if(!email.contains("@gmail.com"))
+        {
+            System.out.println("Enter Valid Email");
+            SignIn();
+        }
+        System.out.print("Password: ");
+        String pass = sc.nextLine();
+        // System.out.println(email + " welcome!!");
+        String sql = "SELECT * FROM user where email = ? and pass= ?"; //select * from uder where email = "praveen "and pass ="1234578" --> 
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1,email);
+        stmt.setString(2,pass);
+        ResultSet rs=stmt.executeQuery();
+        if(rs.next()){
+            String role = rs.getString("role");
+            String name = rs.getString("name");
+            String u_id = rs.getString("id");
+            System.out.println();
+            if(role.equals("admin")){
+                Admin.ret(v);
+            }
+        }
     }catch(SQLException e){
         e.printStackTrace();
     }
