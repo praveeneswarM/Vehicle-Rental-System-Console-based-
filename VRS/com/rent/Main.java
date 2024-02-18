@@ -1,9 +1,6 @@
 package com.rent;
 import java.util.*;
 public class Main{
-    /**
-     * @param atrgs
-     */
     public static void main(String atrgs[])
     {
         Scanner sc=new Scanner(System.in);
