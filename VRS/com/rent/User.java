@@ -176,7 +176,7 @@ public class User {
                 uu = Integer.valueOf(tt.getString("u_id"));
             }
             if (uu != Integer.valueOf(u_id)) {
-                System.out.println("You Doesn't Rent This Vehicle");
+                System.out.println("You Does n't Rent This Vehicle");
                 UserMenu(u_id);
             }
 
@@ -186,54 +186,8 @@ public class User {
                 stmt.setString(2, v);
                 int rs = stmt.executeUpdate();
                 if (rs > 0) {
-                    String g = "SELECT deposit,rent,k_meter FROM disp WHERE id=?";
-                    PreparedStatement st = con.prepareStatement(g);
-                    st.setString(1, v);
-                    ResultSet rtt = st.executeQuery();
-                    if (rtt.next()) {
-                        String dep = rtt.getString("deposit");
-                        String rent = rtt.getString("rent");
-                        String km = rtt.getString("k_meter");
-                        System.out.print("Enter Kilometer:");
-                        String kilo = sc.nextLine();
-                        System.out.println("Damage Chart:");
-                        System.out.println("LOW");
-                        System.out.println("MEDIUM");
-                        System.out.println("HIGH");
-                        System.out.print("Enter Damage Rate:");
-                        String dam = sc.nextLine().toUpperCase();
-                        int depo = 0;
-                        if (dam.equals("LOW")) {
-                            int de = Integer.valueOf(dep);
-                            depo = de - (de / 100) * 20;
-                        } else if (dam.equals("MEDIUM")) {
-                            int de = Integer.valueOf(dep);
-                            depo = de - (de / 100) * 50;
-                        } else if (dam.equals("HIGH")) {
-                            int de = Integer.valueOf(dep);
-                            depo = de - (de / 100) * 75;
-                        }
-                        if (Integer.valueOf(kilo) - Integer.valueOf(km) >= 500) {
-                            int r = Integer.valueOf(rent);
-                            int ren = r + (r / 100) * 15;
-                            System.out.println("Rent Should be payed: " + ren);
-                            System.out.println("Your Deposit After Damage Fair is " + depo);
-                        } else {
-                            System.out.println("Rent Should be payed: " + rent);
-                            System.out.println("Your Deposit After Damage Fair is " + depo);
-                        }
-                        String t = "UPDATE disp SET k_meter=? WHERE id=?";
-                        PreparedStatement j = con.prepareStatement(t);
-                        j.setString(1, kilo);
-                        j.setString(2, v);
-                        int rr = j.executeUpdate();
-                        if (rr > 0)
-                            System.out.println("--- Vehicle Returned Successfully ---");
-                        else {
-                            System.out.println("--- Try Again ---");
-                            Return(u_id);
-                        }
-                    }
+                    System.out.println("----Wait for Admin----");
+                    Auth.SignIn(v);
                 }
             
 
